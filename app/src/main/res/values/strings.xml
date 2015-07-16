@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">NotasFaceis</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Entrar</string>
+
+    <string name="entrar"><b>Entrar</b></string>
+    <string name="cadastrar"><b>Cadastrar</b></string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
