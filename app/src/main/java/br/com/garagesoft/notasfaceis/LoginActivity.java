@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -14,6 +15,11 @@ public class LoginActivity extends ActionBarActivity {
         setContentView(R.layout.activity_login);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getFragmentManager().beginTransaction().replace(R.id.fragment, new LoginFragment()).commit();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,5 +41,13 @@ public class LoginActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void btnEntrarClick(View view) {
+
+    }
+
+    public void btnNovoCadastroClick(View view) {
+        getFragmentManager().beginTransaction().replace(R.id.fragment, new CadastroFragment()).commit();
     }
 }

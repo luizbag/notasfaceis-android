@@ -19,17 +19,20 @@
         android:textSize="@dimen/text_large" />
 
     <EditText
+        android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/control_margin"
-        android:hint="Email"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:textSize="@dimen/text_large" />
 
     <EditText
+        android:id="@+id/etSenha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/control_margin"
-        android:hint="Senha"
+        android:hint="@string/senha"
         android:inputType="textPassword"
         android:textSize="@dimen/text_large" />
 
@@ -52,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/control_margin"
             android:layout_weight="1"
-            android:onClick="btnCadastrarClick"
+            android:onClick="btnNovoCadastroClick"
             android:text="@string/cadastrar"
             android:textSize="@dimen/text_large" />
     </LinearLayout>
