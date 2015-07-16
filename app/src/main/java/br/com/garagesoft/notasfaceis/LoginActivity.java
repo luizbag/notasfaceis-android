@@ -1,5 +1,6 @@
 package br.com.garagesoft.notasfaceis;
 
+import android.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,10 @@ import android.view.View;
 
 
 public class LoginActivity extends ActionBarActivity {
+
+    private LoginFragment loginFragment;
+
+    private CadastroFragment cadastroFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +23,7 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getFragmentManager().beginTransaction().replace(R.id.fragment, new LoginFragment()).commit();
+        changeFragment(getLoginFragment());
     }
 
     @Override
@@ -48,6 +53,30 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void btnNovoCadastroClick(View view) {
-        getFragmentManager().beginTransaction().replace(R.id.fragment, new CadastroFragment()).commit();
+        changeFragment(getCadastroFragment());
+    }
+
+    public void btnCadastrarClick(View view){
+
+    }
+
+    public void btnVoltarClick(View view) {
+        changeFragment(getLoginFragment());
+    }
+
+    private void changeFragment(Fragment fragment) {
+        getFragmentManager().beginTransaction().replace(R.id.layout, fragment).commit();
+    }
+
+    public LoginFragment getLoginFragment() {
+        if(loginFragment == null)
+            loginFragment = new LoginFragment();
+        return loginFragment;
+    }
+
+    public CadastroFragment getCadastroFragment() {
+        if(cadastroFragment == null)
+            cadastroFragment = new CadastroFragment();
+        return cadastroFragment;
     }
 }
