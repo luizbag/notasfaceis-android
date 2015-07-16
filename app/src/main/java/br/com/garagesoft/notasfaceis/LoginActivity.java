@@ -1,11 +1,18 @@
 package br.com.garagesoft.notasfaceis;
 
 import android.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+
+import br.com.garagesoft.notasfaceis.models.Usuario;
+import br.com.garagesoft.notasfaceis.tasks.LoginTask;
+import br.com.garagesoft.notasfaceis.tasks.TaskListener;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -14,10 +21,15 @@ public class LoginActivity extends ActionBarActivity {
 
     private CadastroFragment cadastroFragment;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
     }
 
     @Override
@@ -49,14 +61,36 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void btnEntrarClick(View view) {
-
+        progressDialog.setMessage("Entrando...");
+        progressDialog.show();
+        LoginTask loginTask = new LoginTask(this);
+        loginTask.addTaskListener(new TaskListener<Usuario>() {
+            @Override
+            public void taskCompleted(Usuario result) {
+                result.save();
+                progressDialog.dismiss();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        EditText etEmail = (EditText) findViewById(R.id.etEmail);
+        EditText etSenha = (EditText) findViewById(R.id.etSenha);
+        Usuario usuario = Usuario.findByemail("luizbag@gmail.com");
+        if (usuario == null) {
+            usuario = new Usuario();
+            //usuario.setEmail(etEmail.getText().toString());
+            usuario.setEmail("luizbag@gmail.com");
+        }
+        //usuario.setSenha(etSenha.getText().toString());
+        usuario.setSenha("luizbag");
+        loginTask.execute(usuario);
     }
 
     public void btnNovoCadastroClick(View view) {
         changeFragment(getCadastroFragment());
     }
 
-    public void btnCadastrarClick(View view){
+    public void btnCadastrarClick(View view) {
 
     }
 
@@ -69,13 +103,13 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public LoginFragment getLoginFragment() {
-        if(loginFragment == null)
+        if (loginFragment == null)
             loginFragment = new LoginFragment();
         return loginFragment;
     }
 
     public CadastroFragment getCadastroFragment() {
-        if(cadastroFragment == null)
+        if (cadastroFragment == null)
             cadastroFragment = new CadastroFragment();
         return cadastroFragment;
     }

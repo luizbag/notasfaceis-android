@@ -8,4 +8,6 @@ import com.orm.SugarApp;
 public class NotasFaceis extends SugarApp {
 
     public static final String host = "http://notasfaceis.herokuapp.com";
+
+    public static String token = "";
 }
