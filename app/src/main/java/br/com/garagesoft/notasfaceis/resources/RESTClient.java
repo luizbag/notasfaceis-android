@@ -53,11 +53,11 @@ public class RESTClient {
         else return null;
     }
 
-    public String post(Object obj) throws IOException {
+    public String post(String json) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
-        if (obj != null) {
-            httpPost.setEntity(new StringEntity(convertToJson(obj), "UTF8"));
+        if (json != null && !json.isEmpty()) {
+            httpPost.setEntity(new StringEntity(json, "UTF8"));
             httpPost.setHeader("Content-Type", "application/json");
         }
         if (token != null && !token.isEmpty()) httpPost.addHeader("Authorization", token);
@@ -66,11 +66,11 @@ public class RESTClient {
         else return null;
     }
 
-    public String put(Object obj) throws IOException {
+    public String put(String json) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPut httpPut = new HttpPut(url);
-        if (obj != null) {
-            httpPut.setEntity(new StringEntity(convertToJson(obj), "UTF8"));
+        if (json != null && !json.isEmpty()) {
+            httpPut.setEntity(new StringEntity(json, "UTF8"));
             httpPut.setHeader("Content-Type", "application/json");
         }
         if (token != null && !token.isEmpty()) httpPut.addHeader("Authorization", token);
@@ -79,27 +79,13 @@ public class RESTClient {
         else return null;
     }
 
-    public String delete(String id) throws IOException {
+    public String delete(Long id) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
         HttpDelete httpDelete = new HttpDelete(url + "/" + id);
         if (token != null && !token.isEmpty()) httpDelete.addHeader("Authorization", token);
         HttpResponse httpResponse = httpClient.execute(httpDelete);
         if (httpResponse.getStatusLine().getStatusCode() == 200) return treatResponse(httpResponse);
         else return null;
-    }
-
-    private String convertToJson(Object obj) {
-        return new GsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategy() {
-            @Override
-            public boolean shouldSkipField(FieldAttributes f) {
-                return f.getName().equals("tableName");
-            }
-
-            @Override
-            public boolean shouldSkipClass(Class<?> clazz) {
-                return false;
-            }
-        }).create().toJson(obj);
     }
 
     public String treatResponse(HttpResponse httpResponse) throws IOException {
