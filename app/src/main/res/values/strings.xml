@@ -13,5 +13,7 @@
     <string name="confirma_senha">Confirma Senha</string>
     <string name="voltar">Voltar</string>
     <string name="ok">OK</string>
+    <string name="plus"><b>+</b></string>
+    <string name="novo_caderno">Novo Caderno</string>
 
 </resources>

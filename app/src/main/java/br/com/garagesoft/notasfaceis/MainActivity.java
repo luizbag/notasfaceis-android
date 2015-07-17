@@ -24,6 +24,8 @@ public class MainActivity extends FragmentActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
+
+
     }
 
     @Override
