@@ -6,12 +6,12 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,9 +22,7 @@ import java.io.InputStreamReader;
  */
 public class RESTClient {
 
-    private String host;
-
-    private String resourceName;
+    private String url;
 
     private String token;
 
@@ -33,34 +31,61 @@ public class RESTClient {
     }
 
     public RESTClient(String host, String resourceName, String token) {
-        this.host = host;
-        this.resourceName = resourceName;
+        this.url = host + "/" + resourceName;
         this.token = token;
     }
 
     public String get(String id) throws IOException {
-        HttpContext httpContext = new BasicHttpContext();
         HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(host + "/" + resourceName + "/" + id);
+        HttpGet httpGet = new HttpGet(url + "/" + id);
         if (token != null && !token.isEmpty()) httpGet.addHeader("Authorization", token);
         HttpResponse httpResponse = httpClient.execute(httpGet);
-        return treatResponse(httpResponse);
+        if (httpResponse.getStatusLine().getStatusCode() == 200) return treatResponse(httpResponse);
+        else return null;
+    }
+
+    public String get() throws IOException {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet(url);
+        if (token != null && !token.isEmpty()) httpGet.addHeader("Authorization", token);
+        HttpResponse httpResponse = httpClient.execute(httpGet);
+        if (httpResponse.getStatusLine().getStatusCode() == 200) return treatResponse(httpResponse);
+        else return null;
     }
 
     public String post(Object obj) throws IOException {
-        HttpContext httpContext = new BasicHttpContext();
         HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(host + "/" + resourceName);
+        HttpPost httpPost = new HttpPost(url);
         if (obj != null) {
             httpPost.setEntity(new StringEntity(convertToJson(obj), "UTF8"));
             httpPost.setHeader("Content-Type", "application/json");
         }
         if (token != null && !token.isEmpty()) httpPost.addHeader("Authorization", token);
-        HttpResponse httpResponse = httpClient.execute(httpPost, httpContext);
-        if (httpResponse.getStatusLine().getStatusCode() == 200)
-            return treatResponse(httpResponse);
-        else
-            return null;
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+        if (httpResponse.getStatusLine().getStatusCode() == 200) return treatResponse(httpResponse);
+        else return null;
+    }
+
+    public String put(Object obj) throws IOException {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPut httpPut = new HttpPut(url);
+        if (obj != null) {
+            httpPut.setEntity(new StringEntity(convertToJson(obj), "UTF8"));
+            httpPut.setHeader("Content-Type", "application/json");
+        }
+        if (token != null && !token.isEmpty()) httpPut.addHeader("Authorization", token);
+        HttpResponse httpResponse = httpClient.execute(httpPut);
+        if (httpResponse.getStatusLine().getStatusCode() == 200) return treatResponse(httpResponse);
+        else return null;
+    }
+
+    public String delete(String id) throws IOException {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpDelete httpDelete = new HttpDelete(url + "/" + id);
+        if (token != null && !token.isEmpty()) httpDelete.addHeader("Authorization", token);
+        HttpResponse httpResponse = httpClient.execute(httpDelete);
+        if (httpResponse.getStatusLine().getStatusCode() == 200) return treatResponse(httpResponse);
+        else return null;
     }
 
     private String convertToJson(Object obj) {
@@ -74,8 +99,7 @@ public class RESTClient {
             public boolean shouldSkipClass(Class<?> clazz) {
                 return false;
             }
-        })
-                .create().toJson(obj);
+        }).create().toJson(obj);
     }
 
     public String treatResponse(HttpResponse httpResponse) throws IOException {
