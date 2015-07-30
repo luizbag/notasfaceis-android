@@ -10,7 +10,7 @@ import java.util.List;
 public class Usuario extends SugarRecord<Usuario> {
     private String email;
 
-    private String senha;
+    private String password;
 
     private String token;
 
@@ -30,19 +30,19 @@ public class Usuario extends SugarRecord<Usuario> {
         this.token = token;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
     public static Usuario findByemail(String email) {
         List<Usuario> usuarios = find(Usuario.class, "email=?", new String[]{email});
         if (usuarios.size() > 0)
             return usuarios.get(0);
         else
             return null;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

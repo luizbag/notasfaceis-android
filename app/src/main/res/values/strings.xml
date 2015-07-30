@@ -15,5 +15,7 @@
     <string name="ok">OK</string>
     <string name="plus"><b>+</b></string>
     <string name="novo_caderno">Novo Caderno</string>
+    <string name="cadernos">Cadernos</string>
+    <string name="title_activity_cadastro">CadastroActivity</string>
 
 </resources>
