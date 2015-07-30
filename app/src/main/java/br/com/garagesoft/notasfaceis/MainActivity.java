@@ -20,6 +20,7 @@ import br.com.garagesoft.notasfaceis.models.Caderno;
 import br.com.garagesoft.notasfaceis.models.Nota;
 import br.com.garagesoft.notasfaceis.models.Usuario;
 import br.com.garagesoft.notasfaceis.tasks.GetCadernosAsyncTask;
+import br.com.garagesoft.notasfaceis.tasks.PostCadernoAsyncTask;
 import br.com.garagesoft.notasfaceis.tasks.TaskListener;
 
 

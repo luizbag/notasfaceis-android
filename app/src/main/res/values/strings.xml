@@ -17,5 +17,8 @@
     <string name="novo_caderno">Novo Caderno</string>
     <string name="cadernos">Cadernos</string>
     <string name="title_activity_cadastro">CadastroActivity</string>
+    <string name="novo_usuario">Novo usuario? Clique aqui!</string>
+    <string name="title_activity_notas">NotasActivity</string>
+    <string name="notas">Notas</string>
 
 </resources>
