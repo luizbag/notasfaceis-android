@@ -1,4 +1,4 @@
-package br.com.garagesoft.notasfaceis.resources;
+package br.com.garagesoft.notasfaceis.tasks;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -20,19 +20,22 @@ import java.io.InputStreamReader;
 /**
  * Created by Green01 on 16/07/2015.
  */
-public class RESTClient {
+public class RESTClient<T> {
 
     private String url;
 
     private String token;
 
-    public RESTClient(String host, String resourceName) {
-        this(host, resourceName, null);
+    private Class<T> klass;
+
+    public RESTClient(String host, String resourceName, Class<T> klass) {
+        this(host, resourceName, klass, null);
     }
 
-    public RESTClient(String host, String resourceName, String token) {
+    public RESTClient(String host, String resourceName, Class<T> klass, String token) {
         this.url = host + "/" + resourceName;
         this.token = token;
+        this.klass = klass;
     }
 
     public String get(String id) throws IOException {
@@ -53,7 +56,8 @@ public class RESTClient {
         else return null;
     }
 
-    public String post(String json) throws IOException {
+    public String post(T model) throws IOException {
+        String json = convertToJson(model);
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
         if (json != null && !json.isEmpty()) {
@@ -97,6 +101,24 @@ public class RESTClient {
         }
         reader.close();
         return sb.toString();
+    }
+
+    private String convertToJson(T model) {
+        return new GsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getName().equals("tableName");
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create().toJson(model);
+    }
+
+    private <M> M convertFromJson(String json, Class<M> klass) {
+        return new GsonBuilder().create().fromJson(json, klass);
     }
 
 }

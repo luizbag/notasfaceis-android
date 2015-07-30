@@ -2,12 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lvCadernos"
-        android:layout_above="@id/llBar"></ListView>
-
     <LinearLayout
         android:id="@+id/llBar"
         android:layout_width="match_parent"
@@ -28,4 +22,10 @@
             android:text="@string/plus"
             android:onClick="btnNovoCadernoClick"/>
     </LinearLayout>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lvCadernos"
+        android:layout_above="@id/llBar" />
 </RelativeLayout>

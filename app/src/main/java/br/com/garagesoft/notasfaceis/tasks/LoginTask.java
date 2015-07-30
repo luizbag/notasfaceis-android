@@ -4,16 +4,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.garagesoft.notasfaceis.NotasFaceis;
 import br.com.garagesoft.notasfaceis.models.Usuario;
-import br.com.garagesoft.notasfaceis.resources.RESTClient;
 
 /**
  * Created by Luiz on 16/07/2015.
@@ -36,7 +32,7 @@ public class LoginTask extends AsyncTask<Usuario, Integer, Usuario> {
         }
         String host = ((NotasFaceis) context.getApplicationContext()).host;
         String resourceName = "login";
-        RESTClient restClient = new RESTClient(host, resourceName);
+        RESTClient<Usuario> restClient = new RESTClient(host, resourceName, Usuario.class);
         try {
             String token = restClient.post(usuario);
             usuario.setToken(token);
